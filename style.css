@@ -1,0 +1,98 @@
+.all{
+    background-color: #5fb8d3;
+    position: fixed;
+    margin-top: -2vh;
+    margin-left: -0.5vw;
+    width: 100vw;
+    height: 12vh;
+}
+
+.title{
+  position: relative;
+  float: left;
+  margin-left: 2.5vw;
+  line-height: 5vh;
+  margin-bottom: auto;
+  color: #FFF;
+  font-family: ubuntu;
+
+}
+
+.title h1{
+  padding-bottom: 1vh;
+  border-bottom:0.5vh solid #FFF;
+}
+
+.logo{
+  position: relative;
+  float: left;
+}
+
+.icon{
+  position: relative;
+  float: right;
+  padding-left: 1vw;
+  padding-top: 4vh;
+  color: #FFF;
+}
+
+.icon i{
+  font-size: 2em;
+}
+
+.team {
+  position: relative;
+  float: right;
+  margin-right: 2.5vw;
+  margin-top: 1vh;
+  margin-bottom: 0vh;
+  color: #FFF;
+  height: 10vh;
+  font-weight: bold;
+  border-width: 0.2vw;
+  border-style: dotted;
+  border-color: #FFF;
+  text-align: center;
+  font-size: 1em;
+  font-family: ubuntu;
+}
+
+.team ul{
+  padding-left: 1vw;
+  padding-right: 1vw;
+  padding-bottom: 0vh;
+  margin-top: 1vh;
+  margin-bottom: 0vh;
+  list-style-type: none;
+}
+
+.address{
+  position: absolute;
+  background-color: #e0dee2;
+  margin-top: 10vh;
+  margin-left: -0.5vw;
+  width: 100vw;
+  height: 100vh;
+  font-family: ubuntu;
+}
+
+.address h2{
+  margin-top: 3vh;
+  margin-left: 5vw;
+  margin-bottom: 1vh;
+}
+
+.address input{
+  margin-left: 5vw;
+  border-color: #5fb8d3;
+}
+
+#map{
+  height: 60vh;
+  width: 90vw;
+  position: relative;
+  margin-top: 2vh;
+  margin-left: 11vh;
+
+
+}
