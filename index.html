@@ -15,16 +15,19 @@
       <h2>Endereço:</h2>
         <form action="action_page.php" method="post">   <!--  para fazer ação depois, nao necessariamente post -->
           <input type="text" name="address" style="width:36vw;" /><br /><br />
-          <input type="checkbox" name="option" value="movimento" id="onibus" /> Ônibus em Movimento <br />
-          <input type="checkbox" name="option" value="paradas" id= "paradas" /> Paradas de Ônibus
+          <input type="checkbox" name="onibus" id="onibus" /> Ônibus em Movimento <br />
+          <input type="checkbox" name="paradas" id= "paradas" /> Paradas de Ônibus
         <!-- <input type="button" value="BUSCAR" /> -->
       </form>
-    <div id="map"></div>
+    <div id="map">
+      <button id="atualizar">Atualizar</button>
+
+    </div>
     <script>
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -23.481996, lng: -46.500503},
-          zoom: 16
+          zoom: 18
         });
 
         if (navigator.geolocation) {
@@ -37,6 +40,9 @@
             map.setCenter(pos);
           }
           );
+        }else {
+          document.getElementById("onibus").disabled = true;
+          document.getElementById("paradas").disabled = true;
         }
         map.addListener("zoom_changed", function() {
            // send the new bounds back to your server
@@ -85,6 +91,7 @@
                   for(i;i<=json.length-1;i++){
                     addMarker(json[i].lat,json[i].long,json[i].name,'Descrição:<br />'+json[i].desc);
                   }
+                  addMarker(myLat,myLong,"Your Position","","myPos");
               }
           }
         }

@@ -10,4 +10,10 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
   $lng1 = $json->{'lng1'};
 
   $resp = $mysqli->query("select stop_lat,stop_long,stop_desc,stop_name from paradas where stop_long between $lng1 and $lng0 or stop_lat between $lat1 and $lat0");
-  ?>
+
+if($resp){
+  $response = array();
+  echo json_encode($response);
+}
+
+?>
