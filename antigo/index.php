@@ -6,30 +6,33 @@
     <title>Esperando Busão</title>
     <link rel="stylesheet" href="style.css">  <!--Importar o CSS-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   </head>
 
   <body>
 
-    <script>
-      function pesquisar() {
-          document.getElementById("pesquisa").
-      }
-    </script>
 
     <div class="address">
       <h2>Endereço:</h2>
         <form action="action_page.php" method="post">   <!--  para fazer ação depois, nao necessariamente post -->
-          <input type="text" name="address" style="width:36vw;" id="pesquisa" /><br /><br />
+          <input type="text" name="address" style="width:36vw;" /><br /><br />
           <input type="checkbox" name="option" value="movimento" /> Ônibus em Movimento <br />
           <input type="checkbox" name="option" value="paradas" /> Paradas de Ônibus
         <!-- <input type="button" value="BUSCAR" /> -->
       </form>
-      <div id="map"></div>
-      
-      <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIIYfoCwVPJDG1PN_vxtwzQmzxpq05nfw&callback=initMap">
-      </script>
+        <div id="map">
+            <script>
+              var map;
+              function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                  center: {lat: -23.481996, lng: -46.500503},
+                  zoom: 17
+                });
+              }
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIIYfoCwVPJDG1PN_vxtwzQmzxpq05nfw&callback=initMap"
+            async defer></script>
+          </div>
+    </div>
 
     <div class = "all">
       <div class = "logo">
