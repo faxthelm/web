@@ -9,6 +9,7 @@ mainMap.addListener('dragend', function () {
   move(lat1,long1,lat,long,center);
 });
 });
+
 mainMap.addListener("zoom_changed", function() {
    // send the new bounds back to your server
    lat = mainMap.getBounds().getNorthEast().lat();

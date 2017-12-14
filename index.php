@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8"/>
+  <head>
+    <title>Esperando Busão</title>
+    <link rel="stylesheet" href="style.css">  <!--Importar o CSS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div class="address">
+      <h2>Endereço:</h2>
+        <form action="action_page.php" method="post">   <!--  para fazer ação depois, nao necessariamente post -->
+          <input type="text" name="address" style="width:36vw;" /><br /><br />
+          <input type="checkbox" name="onibus" id="onibus" /> Ônibus em Movimento <br />
+          <input type="checkbox" name="paradas" id= "paradas" /> Paradas de Ônibus
+        <!-- <input type="button" value="BUSCAR" /> -->
+      </form>
+    <div id="map">
+      <button id="atualizar">Atualizar</button>
+    </div>
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -23.481996, lng: -46.500503},
+          zoom: 18
+        });
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            map.setCenter(pos);
+          }
+          );
+        }else {
+          document.getElementById("onibus").disabled = true;
+          document.getElementById("paradas").disabled = true;
+        }
+        map.addListener("zoom_changed", function() {
+           // send the new bounds back to your server
+           lat0 = map.getBounds().getNorthEast().lat();
+           long0 = map.getBounds().getNorthEast().lng();
+           lat1 = map.getBounds().getSouthWest().lat();
+           long1 = map.getBounds().getSouthWest().lng();
+           center = map.getCenter();
+           move(lat0,long0,lat1,long1,center);
+        });
+        map.addListener('dragend', function () {
+          var idleListener = map.addListener('idle', function () {
+          google.maps.event.removeListener(idleListener);
+          lat0 = map.getBounds().getNorthEast().lat();
+          long0 = map.getBounds().getNorthEast().lng();
+          lat1 = map.getBounds().getSouthWest().lat();
+          long1 = map.getBounds().getSouthWest().lng();
+          center = map.getCenter();
+          
+
+          move(lat0,long0,lat1,long1,center);
+        });
+        });
+
+        function move(lat0,long0,lat1,long1,center){
+        map.setCenter(center);
+        if (document.getElementById("paradas").checked) {
+          sendJsonData(lat0,long0,lat1,long1); //paradas
+        }
+        }
+        function sendJsonData(lt0,long0,lt1,long1){
+          var lng0 = long0;
+          var lat0= lt0;
+          var lng1= long1;
+          var lat1= lt1;
+          var reqs = {"lng0":lng0,"lng1":lng1,"lat0":lat0,"lat1":lat1};
+          var xhr = new XMLHttpRequest();
+          var uri = encodeURIComponent(JSON.stringify(reqs));
+          var url = "/paradas.php?lng0=" + lng0 + "&lng1=" + lng1 + "&lat0=" + lat0 + "&lat1=" + lat1;
+          console.log(url);
+          xhr.open("GET", url, true);
+          xhr.setRequestHeader("Content-type", "application/json");
+          xhr.send();
+          xhr.onreadystatechange = function () {
+            //clearOverlays(); Todo: Tirar os marques do mapa
+              if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                  var json = JSON.parse(xhr.responseText);
+                  var i=0;
+                  for(i;i<=json.length-1;i++){
+                    addMarker(json[i].lat,json[i].long,json[i].name,'Descrição:<br />'+json[i].desc);
+                  }
+                  addMarker(myLat,myLong,"Your Position","","myPos");
+              }
+          }
+        }
+      }
+    </script>
+
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIIYfoCwVPJDG1PN_vxtwzQmzxpq05nfw&callback=initMap">
+      </script>
+    </div>
+
+    <div class = "all">
+      <div class = "logo">
+        <div class ="title" >
+            <h1>ESPERANDO BUSÃO</h1>
+        </div>
+
+        <div class = "icon">
+            <i class="fa fa-bus"></i>
+        </div>
+      </div>
+
+      <div class="team">
+        <ul>
+          <li>Ana Paula Bruno Carbone (9761805) </li>
+          <li>Fernando d'Avila Axthelm (9778881) </li>
+          <li>Rodrigo Guerra (8516497) </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
