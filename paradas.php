@@ -26,7 +26,7 @@ echo "lat1" . $_GET['lat1']."\n";
 //     die("Connection failed: " . $mysqli->connect_error);
 // }
 // echo "Connected successfully";
-$resp = mysqli_query($mysqli,"select stop_lat,stop_long,stop_desc,stop_name from paradas where stop_long between '".$lng1."' and '".$lng0."' and stop_lat between '".$lat1."' and ".$lat0);
+$resp = mysqli_query($mysqli,"select stop_lat,stop_long,stop_desc,stop_name from paradas where stop_long between ".$lng0." and ".$lng1." and stop_lat between ".$lat1." and ".$lat0);
 
 //$resp = $mysqli->query("select stop_lat,stop_long,stop_desc,stop_name from paradas limit 10");
 
