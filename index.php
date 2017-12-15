@@ -15,10 +15,13 @@
           <input type="checkbox" name="paradas" id= "paradas" /> Paradas de Ônibus
         <!-- <input type="button" value="BUSCAR" /> -->
       </form>
+      <button id="atualizar" hidden=true >Atualizar</button>
     <div id="map">
-      <button id="atualizar">Atualizar</button>
+
     </div>
+    <script type="text/javascript"></script> </script>
     <script>
+      var lat0,lat1,lng0,lng1,center;
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -23.481996, lng: -46.500503},
@@ -55,7 +58,7 @@
           lat1 = map.getBounds().getSouthWest().lat();
           long1 = map.getBounds().getSouthWest().lng();
           center = map.getCenter();
-          
+
 
           move(lat0,long0,lat1,long1,center);
         });
@@ -81,7 +84,7 @@
           xhr.setRequestHeader("Content-type", "application/json");
           xhr.send();
           xhr.onreadystatechange = function () {
-            //clearOverlays(); Todo: Tirar os marques do mapa
+            // clearOverlays(); Todo: Tirar os marques do mapa de ambos, Busoes e Paradas
               if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
                   var json = JSON.parse(xhr.responseText);
                   var i=0;
@@ -92,6 +95,34 @@
               }
           }
         }
+        document.getElementById("onibus").addEventListener("click",checkBusao,false)
+        function checkBusao(){
+          if (document.getElementById("onibus").checked) {
+            lat0 = map.getBounds().getNorthEast().lat();
+            long0 = map.getBounds().getNorthEast().lng();
+            lat1 = map.getBounds().getSouthWest().lat();
+            long1 = map.getBounds().getSouthWest().lng();
+            center = map.getCenter();
+            document.getElementById("atualizar").hidden = false;
+            move(lat0,long0,lat1,long1,center);
+          } else {
+            document.getElementById("atualizar").hidden = true;
+        //     // clearOverlaysB();
+          }
+        };
+        document.getElementById("paradas").addEventListener("click",checkParada,false)
+        function checkParada(){
+          if (document.getElementById("paradas").checked) {
+            lat0 = map.getBounds().getNorthEast().lat();
+            long0 = map.getBounds().getNorthEast().lng();
+            lat1 = map.getBounds().getSouthWest().lat();
+            long1 = map.getBounds().getSouthWest().lng();
+            center = map.getCenter();
+            move(lat0,long0,lat1,long1,center);
+          } else {
+        //     // clearOverlaysP();
+          }
+        };
       }
     </script>
 
