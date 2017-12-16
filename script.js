@@ -115,6 +115,10 @@
             clearOverlays(markersB);
           }
         };
+        document.getElementById("atualizar").addEventListener("click",atualizar,false)
+        function atualizar(){
+
+        }
         document.getElementById("paradas").addEventListener("click",checkParada,false)
         function checkParada(){
           if (document.getElementById("paradas").checked) {
