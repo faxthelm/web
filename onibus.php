@@ -37,9 +37,9 @@ if ($lat0 > $lat1){
 }
 
 
-include('./httpful.phar');
+  include('./httpful.phar');
 $token = "4622e395db9d7d638990ddcd7297a27610cbe5f8c071953e0ec6d9506e54fee8"; // olho vivo
-$urbase = "http://api.olhovivo.sptrans.com.br/v2.1./";
+$urbase = "https://api.olhovivo.sptrans.com.br/v2.1/";
 $uri = $urbase . "Login/Autenticar?token=" . $token;
 $response = \Httpful\Request::post($uri)->send();
 
@@ -48,15 +48,16 @@ $response = \Httpful\Request::post($uri)->send();
 if(!$response) {
     echo "Token Inválido";
   }else{
-    
+
     $uri = $urbase . "Posicao";
+    echo $response;
     $response2 = \Httpful\Request::get($uri)->send();
 
     if ($response2){
         echo "Oi";
         echo $response2;
     }else{
-        
+
         echo "error Posicao";
     }
   }

@@ -16,11 +16,7 @@
             map.setCenter(pos);
             document.getElementById("onibus").disabled = false;
             document.getElementById("paradas").disabled = false;
-            document.getElementById("onibus").checked = true;
-            document.getElementById("paradas").checked = true;
             document.getElementById("map").style.visibility = 'visible';
-            checkParada();
-            //checkBusao();
           }
           );
         }else {
@@ -54,13 +50,33 @@
         if (document.getElementById("paradas").checked) {
           sendJsonData(lat0,long0,lat1,long1); //paradas
         }
+        if (document.getElementById("onibus").checked) {
+          sendBusoesPosicoes(lat0,long0,lat1,long1); //busoes
         }
-        function addMarker(lat, long, name, desc, bool) {
+        }
+        function addMarkerP(lat, long, name, desc) {
           var iconid = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
-          if(bool){
-            iconid = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+          var info = name +"%0D"+ desc;
+          marker = new google.maps.Marker({
+          position: new google.maps.LatLng({lat:lat,lng:long}),
+          icon: iconid,
+          map: map
+          });
+          var infowindow = new google.maps.InfoWindow({
+            content: info
+          });
+          marker.addListener('click', function() {
+            infowindow.open(map, this);
+          });
+          return marker;
+        }
+
+        function addMarkerB(lat, long, name, dest, orig, sentido) {
+          var iconid = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+          if (sentido == 1){
+            var info = name +"%0D" + orig + " -> " + dest;
           }
-          var info = name +" "+ desc;
+          var info = name +"%0D" + dest + " -> " + orig;
           marker = new google.maps.Marker({
           position: new google.maps.LatLng({lat:lat,lng:long}),
           icon: iconid,
@@ -83,7 +99,6 @@
           var xhr = new XMLHttpRequest();
           var uri = encodeURIComponent(JSON.stringify(reqs));
           var url = "https://esperandobusao.tk/paradas.php?lng0=" + lng0 + "&lng1=" + lng1 + "&lat0=" + lat0 + "&lat1=" + lat1;
-          console.log(url);
           xhr.open("GET", url, true);
           xhr.setRequestHeader("Content-type", "application/json");
           xhr.send();
@@ -93,7 +108,7 @@
                   var json = JSON.parse(xhr.responseText);
                   console.log(json);
                   for(i=0;i<=json.length-1;i++){
-                    var markP = addMarker(parseFloat(json[i].stop_lat),parseFloat(json[i].stop_long),json[i].stop_name,'Descrição:<br />'+json[i].stop_desc, false);
+                    var markP = addMarkerP(parseFloat(json[i].stop_lat),parseFloat(json[i].stop_long),json[i].stop_name,'Descrição:<br />'+json[i].stop_desc);
                     markersP.push(markP);
                   }
 
@@ -109,7 +124,9 @@
             long1 = map.getBounds().getSouthWest().lng();
             center = map.getCenter();
             document.getElementById("atualizar").hidden = false;
+            getBusoes();
             move(lat0,long0,lat1,long1,center);
+
           } else {
             document.getElementById("atualizar").hidden = true;
             clearOverlays(markersB);
@@ -117,6 +134,14 @@
         };
         document.getElementById("atualizar").addEventListener("click",atualizar,false)
         function atualizar(){
+          lat0 = map.getBounds().getNorthEast().lat();
+          long0 = map.getBounds().getNorthEast().lng();
+          lat1 = map.getBounds().getSouthWest().lat();
+          long1 = map.getBounds().getSouthWest().lng();
+          center = map.getCenter();
+          getBusoes();
+          move(lat0,long0,lat1,long1,center);
+
 
         }
         document.getElementById("paradas").addEventListener("click",checkParada,false)
@@ -140,4 +165,33 @@
           }
             markersArray.length = 0;
           }
+        function getBusoes(){
+          // faz requisicao pro arquivo AtualizarOnibus.php
+        }
+        function sendBusoesPosicoes(lt0,long0,lt1,long1){
+          var lng0 = long0;
+          var lat0= lt0;
+          var lng1= long1;
+          var lat1= lt1;
+          var reqs = {"lng0":lng0,"lng1":lng1,"lat0":lat0,"lat1":lat1};
+          var xhr = new XMLHttpRequest();
+          var uri = encodeURIComponent(JSON.stringify(reqs));
+          var url = "https://esperandobusao.tk/onibus.php?lng0=" + lng0 + "&lng1=" + lng1 + "&lat0=" + lat0 + "&lat1=" + lat1;
+          xhr.open("GET", url, true);
+          xhr.setRequestHeader("Content-type", "application/json");
+          xhr.send();
+          xhr.onreadystatechange = function () {
+            clearOverlays(markersB);
+              if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                  var json = JSON.parse(xhr.responseText);
+                  console.log(json);
+                  for(i=0;i<=json.length-1;i++){
+                    var markB = addMarkerB(parseFloat(json[i].py),parseFloat(json[i].px),json[i].c,json[i].lt0,json[i].lt1,json[i].sl);
+                    markersB.push(markB);
+                  }
+
+              }
+          }
+        }
+
     }
