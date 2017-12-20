@@ -193,5 +193,35 @@
               }
           }
         }
+        var input = document.getElementById('searchBox');
+        var limites = new google.maps.LatLngBounds(
+          new google.maps.LatLng(-23.347805, -47.152138),
+          new google.maps.LatLng(-23.696597, -45.906563)
+        );
+        var options = {
+          bounds: limites
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input,options);
 
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+         nomeParaLatLng();
+        });
+
+
+        function nomeParaLatLng() {
+          var endereco = document.getElementById('searchBox').value;
+          geocoder = new google.maps.Geocoder();
+            geocoder.geocode( { 'address' : endereco }, function( results, status ) {
+                if( status == google.maps.GeocoderStatus.OK ) {
+											var pos = {lat:results[0].geometry.location.lat(),lng:results[0].geometry.location.lng()};
+                      map.setCenter(pos);
+                      map.setZoom(16);
+                      lat0 = map.getBounds().getNorthEast().lat();
+                      long0 = map.getBounds().getNorthEast().lng();
+                      lat1 = map.getBounds().getSouthWest().lat();
+                      long1 = map.getBounds().getSouthWest().lng();
+                      center = map.getCenter();
+                      move(lat0,long0,lat1,long1,center);
+            }});
+      }
     }

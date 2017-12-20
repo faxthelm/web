@@ -10,17 +10,15 @@
   <body>
     <div class="address">
       <h2>Endereço:</h2>
-        <form action="action_page.php" method="post">   <!--  para fazer ação depois, nao necessariamente post -->
-          <input type="text" name="address" style="width:36vw;" /><br /><br />
-          <input type="checkbox" name="onibus" id="onibus" disabled/> Ônibus em Movimento <br />
-          <input type="checkbox" name="paradas" id= "paradas" disabled/> Paradas de Ônibus
-        <!-- <input type="button" value="BUSCAR" /> -->
-      </form>
-      <button id="atualizar" hidden=true >Atualizar</button>
-    <div id="map" style="visibility:hidden">
 
-    </div>
-      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIIYfoCwVPJDG1PN_vxtwzQmzxpq05nfw&callback=initMap">
+          <input type="text" name="address" style="width:36vw;" id="searchBox"/><br />
+          <input type="checkbox" name="onibus" id="onibus" disabled/> Ônibus em Movimento
+          <button id="atualizar" hidden=true >Atualizar</button><br />
+          <input type="checkbox" name="paradas" id= "paradas" disabled/> Paradas de Ônibus
+
+    <div id="map" style="visibility:hidden"></div>
+
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIIYfoCwVPJDG1PN_vxtwzQmzxpq05nfw&callback=initMap&libraries=places">
       </script>
     </div>
 
